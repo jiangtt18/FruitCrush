@@ -9,8 +9,8 @@ BallCrush is a candyCrush-inspired game in which players complete levels by swap
 - [ ]  top balls will fall when lower balls are eliminated
 - [ ]  can calculate score
 - [ ]  bonus
-    -[ ] create sound effect
-    -[ ] create time-limited level
+        -[ ] create sound effect
+        -[ ] create time-limited level
 
 
 **Wireframes**
