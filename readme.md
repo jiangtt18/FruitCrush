@@ -26,12 +26,12 @@ Over the weekend: Setup all necessary Node modules, including getting webpack up
 
 - [ ] Create a webpack.config.js file
 - [ ] Generate bundle.js and ensure it's working with the entry file
-- [ ]Create basic visual frames
+- [ ] Create basic visual frames
  
 Day 1: 
 
-- [ ]Complete cavas drawing
-- [ ]Start on keyboard control for swapping balls
+- [ ] Complete cavas drawing
+- [ ] Start on keyboard control for swapping balls
 
 Day 2:
 - [ ] Complete balls elimation logic
