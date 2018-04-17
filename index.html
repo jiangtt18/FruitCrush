@@ -33,8 +33,13 @@
       function Bubble(x, y) {
         this.x1 = x;
         this.y1 = y;
-        // this.x2 = x;
-        // this.y2 = y;
+        this.x2 = x;
+        this.y2 = y;
+        this.moveBall = function (x2, y2, colorIdx){
+          this.x2 = x2;
+          this.y2 = y2;
+          this.colorIdx = colorIdx;
+        }
       }
 
       function initialize(){
@@ -47,13 +52,13 @@
 
         for(let x = 0; x < 10; x ++){
           for(let y = 0; y < 10; y ++){
-            let foundyor = false;
-            while(!foundyor){
-              foundyor = false;
+            let foundcolor = false;
+            while(!foundcolor){
+              foundcolor = false;
               let randomIndex = Math.floor(Math.random() * 6);
-              if(!hasStraight3yors(x, y, randomIndex)){
-                bubbles[x][y].yorIdx = randomIndex;
-                foundyor = true;
+              if(!hasStraight3colors(x, y, randomIndex)){
+                bubbles[x][y].colorIdx = randomIndex;
+                foundcolor = true;
               }
             }
           }
@@ -68,25 +73,25 @@
         paint();
       }
 
-      function hasStraight3yors(x,y,curBubble){
-        let hasStraight3yors = false;
+      function hasStraight3colors(x,y,curBubble){
+        let hasStraight3colors = false;
         if(y > 1) {
-          let bottomBubble = bubbles[x][y-2].yorIdx;
-          let middleBubble = bubbles[x][y-1].yorIdx;
+          let bottomBubble = bubbles[x][y-2].colorIdx;
+          let middleBubble = bubbles[x][y-1].colorIdx;
           if(bottomBubble == middleBubble && middleBubble == curBubble){
-            hasStraight3yors = true;
+            hasStraight3colors = true;
           }
         }
 
         if(x > 1) {
-          let leftBubble = bubbles[x-2][y].yorIdx;
-          let middleBubble = bubbles[x-1][y].yorIdx;
+          let leftBubble = bubbles[x-2][y].colorIdx;
+          let middleBubble = bubbles[x-1][y].colorIdx;
           if (leftBubble == middleBubble && middleBubble == curBubble){
-            hasStraight3yors = true;
+            hasStraight3colors = true;
           }
         }
 
-        return hasStraight3yors;
+        return hasStraight3colors;
       }
 
 
@@ -94,7 +99,7 @@
       function paint() {
         for(let x = 0; x < 10; x ++) {
           for(let y = 0; y < 10; y ++) {
-            let idx = bubbles[x][y].yorIdx
+            let idx = bubbles[x][y].colorIdx
             ctx.drawImage(images[idx],
             x * 60, y * 60 + 100, 60, 60)
           }
@@ -109,8 +114,8 @@
       function myMouseDown(e) {
         mouseDownX = e.offsetX;
         mouseDownY = e.offsetY;
-        console.log('dX:' + mouseDownX);
-        console.log('dY:' + mouseDownY);
+        // console.log('dX:' + mouseDownX);
+        // console.log('dY:' + mouseDownY);
       }
 
       function myMouseUp(e){
@@ -119,6 +124,26 @@
         console.log('ballX:' + ballX1);
         console.log('ballY:' + ballY1);
 
+        var ballX2 = ballX1;
+        var ballY2 = ballY1;
+        var mouseUpX = e.offsetX;
+        var mouseUpY = e.offsetY;
+
+        if(Math.abs(mouseUpX - mouseDownX) == 0 && Math.abs(mouseUpY - mouseDownY) == 0){
+          return;
+        } else if (Math.abs(mouseUpX - mouseDownX) > Math.abs(mouseUpY - mouseDownY)) {
+          ballX2 += (mouseUpX - mouseDownX > 0) ? 1 : -1;
+        } else {
+          ballY2 += (mouseUpY - mouseDownY > 0) ? 1 : -1;
+        }
+
+        console.log('ballX:' + ballX2);
+        console.log('ballY:' + ballY2);
+
+        var ballColor = bubbles[ballX1][ballY1].colorIdx;
+        bubbles[ballX1][ballY1].moveBall(ballX2,ballY2, bubbles[ballX2][ballY2].colorIdx);
+        bubbles[ballX2][ballY2].moveBall(ballX1, ballY1, ballColor);
+        paint();
       }
 
     </script>
