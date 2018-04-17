@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>BallCrush</title>
+    <title>bubbleCrush</title>
     <style>
     #canvas {
       margin:30px;
@@ -27,15 +27,18 @@
       const bubbles = [];
       const images = [rose, orange, lemon, grey, lime, grapefruit, blue];
 
-      var mouseDownX = null;
-      var mouseDownY = null;
+      var startPosX = null;
+      var startPosY = null;
 
       function Bubble(x, y) {
+        // assign bubble
         this.x1 = x;
         this.y1 = y;
-        this.x2 = x;
-        this.y2 = y;
-        this.moveBall = function (x2, y2, colorIdx){
+        //
+        // this.x2 = null;
+        // this.y2 = null;
+
+        this.moveBubble = function (x2, y2, colorIdx){
           this.x2 = x2;
           this.y2 = y2;
           this.colorIdx = colorIdx;
@@ -67,8 +70,8 @@
         let canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
 
-        canvas.onmousedown = myMouseDown;
-        canvas.onmouseup = myMouseUp;
+        canvas.onmousedown = pressMouse;
+        canvas.onmouseup = releaseMouse;
 
         paint();
       }
@@ -111,39 +114,52 @@
         ctx.fillText('Score : 3333', 450, 50);
       }
 
-      function myMouseDown(e) {
-        mouseDownX = e.offsetX;
-        mouseDownY = e.offsetY;
-        // console.log('dX:' + mouseDownX);
-        // console.log('dY:' + mouseDownY);
+      function pressMouse(e) {
+        startPosX = e.offsetX;
+        startPosY = e.offsetY;
+        // console.log('dX:' + startPosX);
+        // console.log('dY:' + startPosY);
       }
 
-      function myMouseUp(e){
-        var ballX1 = Math.floor(mouseDownX / 60);
-        var ballY1 = Math.floor((mouseDownY - 100) / 60);
-        console.log('ballX:' + ballX1);
-        console.log('ballY:' + ballY1);
-
-        var ballX2 = ballX1;
-        var ballY2 = ballY1;
-        var mouseUpX = e.offsetX;
-        var mouseUpY = e.offsetY;
-
-        if(Math.abs(mouseUpX - mouseDownX) == 0 && Math.abs(mouseUpY - mouseDownY) == 0){
-          return;
-        } else if (Math.abs(mouseUpX - mouseDownX) > Math.abs(mouseUpY - mouseDownY)) {
-          ballX2 += (mouseUpX - mouseDownX > 0) ? 1 : -1;
-        } else {
-          ballY2 += (mouseUpY - mouseDownY > 0) ? 1 : -1;
-        }
-
-        console.log('ballX:' + ballX2);
-        console.log('ballY:' + ballY2);
-
-        var ballColor = bubbles[ballX1][ballY1].colorIdx;
-        bubbles[ballX1][ballY1].moveBall(ballX2,ballY2, bubbles[ballX2][ballY2].colorIdx);
-        bubbles[ballX2][ballY2].moveBall(ballX1, ballY1, ballColor);
+      function releaseMouse(e){
+        let oldX = Math.floor(startPosX / 60);
+        let oldY = Math.floor((startPosY - 100) / 60);
+        // console.log('bubbleX:' + oldX);
+        // console.log('bubbleY:' + oldY);
+        let endPosX = e.offsetX;
+        let endPosY = e.offsetY;
+        let newPos = calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY);
+        let newX = newPos[0];
+        let newY = newPos[1];
+        //
+        // console.log('bubbleX:' + newX);
+        // console.log('bubbleY:' + newY);
+        swapColorsAndPos(oldX, oldY, newX, newY);
         paint();
+      }
+
+      function swapColorsAndPos(oldX, oldY, newX, newY){
+        let oldBubble = bubbles[oldX][oldY];
+        let newBubble = bubbles[newX][newY];
+        let oldColorIdx = oldBubble.colorIdx;
+        oldBubble.moveBubble(newX, newY, newBubble.colorIdx);
+        newBubble.moveBubble(oldX, oldY, oldColorIdx);
+
+      }
+
+      function calcNewPos (startPosX, endPosX, startPosY, endPosY, oldX, oldY) {
+        let xDistance = endPosX - startPosX;
+        let yDistance = endPosY - startPosY;
+        let x = oldX;
+        let y = oldY;
+        if(Math.abs(xDistance) == 0 && Math.abs(yDistance) == 0){
+          return;
+        } else if (Math.abs(endPosX - startPosX) > Math.abs(yDistance)) {
+          x += (xDistance > 0) ? 1 : -1;
+        } else {
+          y += (yDistance > 0) ? 1 : -1;
+        }
+        return [x,y];
       }
 
     </script>
