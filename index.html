@@ -3,8 +3,132 @@
   <head>
     <meta charset="utf-8">
     <title>BallCrush</title>
+    <style>
+    #canvas {
+      margin:30px;
+      border: 1px solid black;
+    }
+    </style>
   </head>
-  <body>
+  <body onload='initialize()'>
     <h1>Here we are!</h1>
+    <canvas id='canvas' width='600' height='700'></canvas>
+    <img id='rose' src="lib/images/rose.png" style='display:none;'>
+    <img id='orange' src="lib/images/orange.png" style='display:none;'>
+    <img id='lemon' src="lib/images/lemon.png" style='display:none;'>
+    <img id='grey' src="lib/images/grey.png" style='display:none;'>
+    <img id='lime' src="lib/images/lime.png" style='display:none;'>
+    <img id='grapefruit' src="lib/images/grapefruit.png" style='display:none;'>
+    <img id='blue' src="lib/images/blue.png" style='display:none;'>
+
+
+    <script>
+      var ctx;
+      const bubbles = [];
+      const images = [rose, orange, lemon, grey, lime, grapefruit, blue];
+
+      var mouseDownX = null;
+      var mouseDownY = null;
+
+      function Bubble(x, y) {
+        this.x1 = x;
+        this.y1 = y;
+        // this.x2 = x;
+        // this.y2 = y;
+      }
+
+      function initialize(){
+        for(let x = 0; x < 10; x ++) {
+          bubbles[x] = [];
+          for(let y = 0; y < 10; y ++) {
+            bubbles[x][y] = new Bubble(x, y);
+          }
+        }
+
+        for(let x = 0; x < 10; x ++){
+          for(let y = 0; y < 10; y ++){
+            let foundyor = false;
+            while(!foundyor){
+              foundyor = false;
+              let randomIndex = Math.floor(Math.random() * 6);
+              if(!hasStraight3yors(x, y, randomIndex)){
+                bubbles[x][y].yorIdx = randomIndex;
+                foundyor = true;
+              }
+            }
+          }
+        }
+
+        let canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+
+        canvas.onmousedown = myMouseDown;
+        canvas.onmouseup = myMouseUp;
+
+        paint();
+      }
+
+      function hasStraight3yors(x,y,curBubble){
+        let hasStraight3yors = false;
+        if(y > 1) {
+          let bottomBubble = bubbles[x][y-2].yorIdx;
+          let middleBubble = bubbles[x][y-1].yorIdx;
+          if(bottomBubble == middleBubble && middleBubble == curBubble){
+            hasStraight3yors = true;
+          }
+        }
+
+        if(x > 1) {
+          let leftBubble = bubbles[x-2][y].yorIdx;
+          let middleBubble = bubbles[x-1][y].yorIdx;
+          if (leftBubble == middleBubble && middleBubble == curBubble){
+            hasStraight3yors = true;
+          }
+        }
+
+        return hasStraight3yors;
+      }
+
+
+
+      function paint() {
+        for(let x = 0; x < 10; x ++) {
+          for(let y = 0; y < 10; y ++) {
+            let idx = bubbles[x][y].yorIdx
+            ctx.drawImage(images[idx],
+            x * 60, y * 60 + 100, 60, 60)
+          }
+        }
+
+        ctx.font = 'bold 20px Open Sans';
+        ctx.textAlign = 'center';
+        ctx.fillText('Moves Left: 10', 150, 50);
+        ctx.fillText('Score : 3333', 450, 50);
+      }
+
+      function myMouseDown(e) {
+        mouseDownX = e.offsetX;
+        mouseDownY = e.offsetY;
+        console.log('dX:' + mouseDownX);
+        console.log('dY:' + mouseDownY);
+      }
+
+      function myMouseUp(e){
+        var ballX1 = Math.floor(mouseDownX / 60);
+        var ballY1 = Math.floor((mouseDownY - 100) / 60);
+        console.log('ballX:' + ballX1);
+        console.log('ballY:' + ballY1);
+
+      }
+
+    </script>
+
+
+
+
+
   </body>
+
+
+
 </html>

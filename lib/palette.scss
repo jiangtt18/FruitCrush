@@ -1,0 +1,46 @@
+
+/* RGB */
+$rose: rgba(234, 159, 159, 1);
+$grey: rgba(191, 177, 183, 1);
+$red: rgba(229, 94, 107, 1);
+$lemon: rgba(229, 208, 48, 1);
+$orange: rgba(244, 151, 105, 1);
+$green: rgba(197, 219, 182, 1);
+
+
+#rose{
+  width:60px;
+  height:60px;
+  background-color: $rose;
+  border: 1px solid black;
+}
+
+#grey{
+  width:60px;
+  height:60px;
+  background-color: $grey
+}
+
+#red{
+  width:60px;
+  height:60px;
+  background-color: $red
+}
+
+#lemon{
+  width:60px;
+  height:60px;
+  background-color: $lemon
+}
+
+#orange{
+  width:60px;
+  height:60px;
+  background-color: $orange
+}
+
+#green{
+  width:60px;
+  height:60px;
+  background-color: $green
+}
