@@ -8,9 +8,17 @@
       margin:30px;
       border: 1px solid black;
     }
+
+    #startBtn {
+      position: absolute;
+      top:400px;
+      left:250px;
+      height:50px;
+      font-size: 20px;
+    }
     </style>
   </head>
-  <body onload='initialize()'>
+  <body >
     <h1>Here we are!</h1>
     <canvas id='canvas' width='600' height='700'></canvas>
     <img id='rose' src="lib/images/rose.png" style='display:none;'>
@@ -20,43 +28,81 @@
     <img id='lime' src="lib/images/lime.png" style='display:none;'>
     <img id='grapefruit' src="lib/images/grapefruit.png" style='display:none;'>
     <img id='blue' src="lib/images/blue.png" style='display:none;'>
+    <audio src='lib/sound/sound.wav' id='sound'></audio>
+    <!-- <audio src='lib/sound/BitQuest.wav' id='bgm'></audio> -->
 
+    <button type='button' id= 'startBtn' onclick='initialize()'> START</button>
 
     <script>
       var ctx;
       const bubbles = [];
-      const moves = [];
-      var timer;
+      var moves = [];
+      var moveCount = 0;
+      var score;
+      var animationMoveTime;
       const images = [rose, orange, lemon, grey, lime, grapefruit, blue];
-
+      var startBtn = document.getElementById('startBtn');
       var startPosX = null;
       var startPosY = null;
-
+      var sound = document.getElementById('sound');
       function Bubble(x, y) {
         // assign bubble
         this.x1 = x;
         this.y1 = y;
-        //
-        // this.x2 = x;
-        // this.y2 = y;
+        this.animationInterval = 0;
 
-        this.moveBubble = function (x2, y2, colorIdx){
+        this.x2 = x;
+        this.y2 = y;
+
+        this.getY = function(){
+
+          return (this.y1 + (this.y2-this.y1) * (this.animationInterval)/25) * 60 + 100;
+        }
+
+        this.setBubbleProp = function (x2, y2, colorIdx){
           this.x2 = x2;
           this.y2 = y2;
           this.colorIdx = colorIdx;
           this.moving = true;
+          this.animationInterval = 25;// cnotrol the time between drop and swap
           moves.push(this);
+        }
+
+        this.update = function(){
+          this.animationInterval--;
+
+          console.log(this.animationInterval);
+
+          if(this.animationInterval <= 0) {
+            this.moving = false;
+          }
         }
       }
 
       function initialize(){
-        for(let x = 0; x < 10; x ++) {
+        startBtn.style.display = 'none';
+        moveCount = 3;
+        score = 0;
+        initBubbleBoard();
+        initBubbleColor();
+        initCanvas();
+        // debugger;
+        animationMoveTime = setInterval(checkBubbleStatus, 25);//swapping motion time
+        // call continuesly . will always run down from 25 animationInteval. but will control the run down speed
+        console.log(animationMoveTime)
+
+      }
+
+      function initBubbleBoard(){
+        for(let x = 0; x < 10; x++) {
           bubbles[x] = [];
-          for(let y = 0; y < 10; y ++) {
+          for(let y = 0; y < 10; y++) {
             bubbles[x][y] = new Bubble(x, y);
           }
         }
+      }
 
+      function initBubbleColor(){
         for(let x = 0; x < 10; x ++){
           for(let y = 0; y < 10; y ++){
             let foundcolor = false;
@@ -70,24 +116,49 @@
             }
           }
         }
-
-        let canvas = document.getElementById('canvas');
-        ctx = canvas.getContext('2d');
-
-        canvas.onmousedown = pressMouse;
-        canvas.onmouseup = releaseMouse;
-
-        timer = setInterval(checkBallStatus, 200);
-
-        paint();
       }
 
-      function checkBallStatus(){
+      function initCanvas(){
+        let canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+        canvas.onmousedown = pressMouse;
+        canvas.onmouseup = releaseMouse;
+      }
+
+
+      function checkBubbleStatus(){
           if(moves.length > 0){
-            setRemoveMark();
-            fall();
+             console.log(moves);
+            for(let i = 0; i < moves.length; i++){
+              // debugger;
+              moves[i].update()
+            }
+
+            moves = moves.filter(
+              function(bubble) {
+                return bubble.animationInterval != 0;
+              }
+            );
+
+            if(moves.length == 0) {
+              setRemoveMark();
+              fall();
+            }
           }
-          paint();
+            draw();
+
+            if(moves.length == 0 && moveCount == 0) {
+              clearInterval(animationMoveTime);
+              animationMoveTime = null;
+              setTimeout('gameOver()', 500)
+            }
+      }
+
+      function gameOver(){
+        ctx.clearRect(0,0,600,700);
+        startBtn.style.display = 'inline';
+        ctx.font = 'bold 30px Open Sans';
+        ctx.fillText('Score: ' + score, 300,250);
       }
 
 
@@ -155,7 +226,7 @@
 
             if(y != newIdx) {
               var colorIdx = (newIdx >= 0) ? bubbles[x][newIdx].colorIdx : getRandomNum(6);
-              bubbles[x][y].moveBubble(x,newIdx,colorIdx);
+              bubbles[x][y].setBubbleProp(x,newIdx,colorIdx);
             }
           }
         }
@@ -163,11 +234,19 @@
         resetMark();
       }
 
+      let playSound = true;
       function resetMark(){
         for(let x = 0; x < 10; x++){
           for(let y = 0; y < 10; y++) {
             if(bubbles[x][y].remove){
               bubbles[x][y].remove = false;
+              score += 100;
+              if(playSound){
+                sound.pause();
+                sound.currentTime = 0;
+                sound.play();
+                playSound = false;
+              }
             }
           }
         }
@@ -200,20 +279,20 @@
 
 
 
-      function paint() {
+      function draw() {
         ctx.clearRect(0,0,600,700);
         for(let x = 0; x < 10; x ++) {
           for(let y = 0; y < 10; y ++) {
             let idx = bubbles[x][y].colorIdx
             ctx.drawImage(images[idx],
-            x * 60, y * 60 + 100, 60, 60)
+            x * 60, bubbles[x][y].getY(), 60, 60)
           }
         }
 
         ctx.font = 'bold 20px Open Sans';
         ctx.textAlign = 'center';
-        ctx.fillText('Moves Left: 10', 150, 50);
-        ctx.fillText('Score : 3333', 450, 50);
+        ctx.fillText('Moves Left:'+ moveCount, 150, 50);
+        ctx.fillText('Score :' + score, 450, 50);
       }
 
       function pressMouse(e) {
@@ -236,16 +315,22 @@
         //
         // console.log('bubbleX:' + newX);
         // console.log('bubbleY:' + newY);
-        swapColorsAndPos(oldX, oldY, newX, newY);
-        paint();
+        // debugger;
+        if(bubbles[oldX][oldY].moving || bubbles[newX][newY].moving || animationMoveTime == null) {
+          // let it drops
+          return
+        }
+        swapColorsAndPos(oldX, oldY, newX, newY); // drop to the ideal position. stops.
+        moveCount--;
+        draw();
       }
 
       function swapColorsAndPos(oldX, oldY, newX, newY){
         let oldBubble = bubbles[oldX][oldY];
         let newBubble = bubbles[newX][newY];
         let oldColorIdx = oldBubble.colorIdx;
-        oldBubble.moveBubble(newX, newY, newBubble.colorIdx);
-        newBubble.moveBubble(oldX, oldY, oldColorIdx);
+        oldBubble.setBubbleProp(newX, newY, newBubble.colorIdx);
+        newBubble.setBubbleProp(oldX, oldY, oldColorIdx);
 
       }
 
