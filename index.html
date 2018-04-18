@@ -25,6 +25,8 @@
     <script>
       var ctx;
       const bubbles = [];
+      const moves = [];
+      var timer;
       const images = [rose, orange, lemon, grey, lime, grapefruit, blue];
 
       var startPosX = null;
@@ -35,13 +37,15 @@
         this.x1 = x;
         this.y1 = y;
         //
-        // this.x2 = null;
-        // this.y2 = null;
+        // this.x2 = x;
+        // this.y2 = y;
 
         this.moveBubble = function (x2, y2, colorIdx){
           this.x2 = x2;
           this.y2 = y2;
           this.colorIdx = colorIdx;
+          this.moving = true;
+          moves.push(this);
         }
       }
 
@@ -58,7 +62,7 @@
             let foundcolor = false;
             while(!foundcolor){
               foundcolor = false;
-              let randomIndex = Math.floor(Math.random() * 6);
+              let randomIndex = getRandomNum(6);
               if(!hasStraight3colors(x, y, randomIndex)){
                 bubbles[x][y].colorIdx = randomIndex;
                 foundcolor = true;
@@ -73,7 +77,104 @@
         canvas.onmousedown = pressMouse;
         canvas.onmouseup = releaseMouse;
 
+        timer = setInterval(checkBallStatus, 200);
+
         paint();
+      }
+
+      function checkBallStatus(){
+          if(moves.length > 0){
+            setRemoveMark();
+            fall();
+          }
+          paint();
+      }
+
+
+      function setRemoveMark(){
+        setHorizontalRemoveMark();
+        setVerticalRemoveMark();
+
+      }
+
+      function setHorizontalRemoveMark(){
+        for(let x = 0; x < 10; x++){
+          let currentColorIdx = bubbles[x][0].colorIdx;
+          let numSameColor = 1;
+          for(let y = 1; y < 10; y ++){
+            let nextColorIdx = bubbles[x][y].colorIdx;
+            if(currentColorIdx == nextColorIdx) {
+              numSameColor ++;
+              if ( numSameColor >= 3){
+                bubbles[x][y-2].remove = true
+                bubbles[x][y-1].remove = true
+                bubbles[x][y].remove = true
+              }
+            } else {
+              currentColorIdx = nextColorIdx;
+              numSameColor = 1;
+            }
+          }
+        }
+      }
+
+      function setVerticalRemoveMark(){
+        for(let y = 0; y < 10; y++){
+          let currentColorIdx = bubbles[0][y].colorIdx;
+          var numSameColor = 1;
+          for(let x = 1; x < 10; x++){
+            let nextColorIdx = bubbles[x][y].colorIdx;
+            if(currentColorIdx == nextColorIdx) {
+              numSameColor++;
+              if(numSameColor >= 3){
+                bubbles[x-2][y].remove = true;
+                bubbles[x-1][y].remove = true;
+                bubbles[x][y].remove = true;
+              }
+            } else {
+              currentColorIdx = nextColorIdx;
+              numSameColor = 1;
+            }
+          }
+        }
+      }
+
+
+
+
+      function fall(){
+        for(let x = 0; x < 10; x++){
+          for(let y = 9, newIdx = 9; y >= 0; y--, newIdx--){
+            while (newIdx >= 0){
+              if (bubbles[x][newIdx].remove){
+                newIdx--;
+              } else {
+                break;
+              }
+            }
+
+            if(y != newIdx) {
+              var colorIdx = (newIdx >= 0) ? bubbles[x][newIdx].colorIdx : getRandomNum(6);
+              bubbles[x][y].moveBubble(x,newIdx,colorIdx);
+            }
+          }
+        }
+
+        resetMark();
+      }
+
+      function resetMark(){
+        for(let x = 0; x < 10; x++){
+          for(let y = 0; y < 10; y++) {
+            if(bubbles[x][y].remove){
+              bubbles[x][y].remove = false;
+            }
+          }
+        }
+      }
+
+      function getRandomNum(n){
+        return  Math.floor(Math.random() * n);
       }
 
       function hasStraight3colors(x,y,curBubble){
@@ -100,6 +201,7 @@
 
 
       function paint() {
+        ctx.clearRect(0,0,600,700);
         for(let x = 0; x < 10; x ++) {
           for(let y = 0; y < 10; y ++) {
             let idx = bubbles[x][y].colorIdx
