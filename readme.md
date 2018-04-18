@@ -22,13 +22,22 @@ BallCrush is a candyCrush-inspired game in which players complete levels by swap
 **TimeLine**
 
 
+<<<<<<< HEAD
 Over the weekend: Setup all necessary Node modules, including getting webpack up and running. Create webpack.config.js as well as package.json.
+=======
+Over the weekend: Setup all necessary Node modules, including getting webpack up and running. Create webpack.config.js as well as package.json. 
+>>>>>>> ffd1b412481f85c585081e69d3ce0e549e7e8e72
 
 - [ ] Create a webpack.config.js file
 - [ ] Generate bundle.js and ensure it's working with the entry file
 - [ ] Create basic visual frames
+<<<<<<< HEAD
 
 Day 1:
+=======
+ 
+Day 1: 
+>>>>>>> ffd1b412481f85c585081e69d3ce0e549e7e8e72
 
 - [ ] Complete cavas drawing
 - [ ] Start on keyboard control for swapping balls
@@ -36,11 +45,20 @@ Day 1:
 Day 2:
 - [ ] Complete balls elimation logic
 - [ ] Start on animation
+<<<<<<< HEAD
 
 Day 3:
 - [ ] Continue on logic
 - [ ] Complete animation
 
 Day 4:
+=======
+ 
+Day 3: 
+- [ ] Continue on logic
+- [ ] Complete animation
+
+Day 4: 
+>>>>>>> ffd1b412481f85c585081e69d3ce0e549e7e8e72
 - [ ] polish animation
 - [ ] testing
