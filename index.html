@@ -24,12 +24,12 @@
     <img id='rose' src="lib/images/rose.png" style='display:none;'>
     <img id='orange' src="lib/images/orange.png" style='display:none;'>
     <img id='lemon' src="lib/images/lemon.png" style='display:none;'>
-    <img id='grey' src="lib/images/grey.png" style='display:none;'>
+    <img id='orchard' src="lib/images/orchard.png" style='display:none;'>
     <img id='lime' src="lib/images/lime.png" style='display:none;'>
     <img id='grapefruit' src="lib/images/grapefruit.png" style='display:none;'>
     <img id='blue' src="lib/images/blue.png" style='display:none;'>
     <audio src='lib/sound/sound.wav' id='sound'></audio>
-    <!-- <audio src='lib/sound/BitQuest.wav' id='bgm'></audio> -->
+    <audio src='lib/sound/backgroud.mp3' id='bgm'></audio>
 
     <button type='button' id= 'startBtn' onclick='initialize()'> START</button>
 
@@ -40,11 +40,12 @@
       var moveCount = 0;
       var score;
       var animationMoveTime;
-      const images = [rose, orange, lemon, grey, lime, grapefruit, blue];
+      const images = [rose, orange, lemon, orchard, lime, grapefruit, blue];
       var startBtn = document.getElementById('startBtn');
       var startPosX = null;
       var startPosY = null;
       var sound = document.getElementById('sound');
+      var bgm = document.getElementById('bgm');
       function Bubble(x, y) {
         // assign bubble
         this.x1 = x;
@@ -89,6 +90,7 @@
         // debugger;
         animationMoveTime = setInterval(checkBubbleStatus, 25);//swapping motion time
         // call continuesly . will always run down from 25 animationInteval. but will control the run down speed
+        bgm.play();
         console.log(animationMoveTime)
 
       }
@@ -150,6 +152,8 @@
             if(moves.length == 0 && moveCount == 0) {
               clearInterval(animationMoveTime);
               animationMoveTime = null;
+              bgm.pause();
+              bgm.currentTime = 0;
               setTimeout('gameOver()', 500)
             }
       }
@@ -234,8 +238,9 @@
         resetMark();
       }
 
-      let playSound = true;
+
       function resetMark(){
+        let playSound = true;
         for(let x = 0; x < 10; x++){
           for(let y = 0; y < 10; y++) {
             if(bubbles[x][y].remove){
@@ -285,7 +290,7 @@
           for(let y = 0; y < 10; y ++) {
             let idx = bubbles[x][y].colorIdx
             ctx.drawImage(images[idx],
-            x * 60, bubbles[x][y].getY(), 60, 60)
+            x * 60 + 10, bubbles[x][y].getY(), 40, 40)
           }
         }
 
