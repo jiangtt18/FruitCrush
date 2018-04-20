@@ -1,4 +1,6 @@
 # FruitCrush
+
+[FruitCrush Live](https://jiangtt18.github.io/FruitCrush/)
 BallCrush is a candy crush inspired game in which players complete levels by swapping pieces of fruit on a game board to make a match of three or more of the same pattern, eliminating those fruit from the board and replacing them with new ones, which could potentially create further matches.
 
 
