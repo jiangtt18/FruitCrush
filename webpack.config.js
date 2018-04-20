@@ -4,7 +4,7 @@ module.exports = {
 	context: __dirname,
 	entry: './lib/bubblecrush.js',
 	output: {
-		path: path.resolve(__dirname, 'app', 'assets', 'javascripts'),
+		path: path.resolve(__dirname),
 		filename: 'bundle.js'
 	},
 	module: {
