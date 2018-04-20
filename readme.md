@@ -12,8 +12,8 @@ BallCrush is a candy crush inspired game in which players complete levels by swa
 - [ ]  top fruit will fall when lower fruit is eliminated
 - [ ]  can calculate score
 - [ ]  bonus
-        -[ ] create sound effect
-        -[ ] create time-limited level
+     - [ ]  create sound effect
+     - [ ]  create time-limited level
 
 
 **Features**
