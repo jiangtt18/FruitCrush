@@ -21,7 +21,11 @@ BallCrush is a candy crush inspired game in which players complete levels by swa
 ![index](lib/images/index1.png)
 The game index page is animated by pure CSS, such as spinning buttons and floating clouds to create a seamless UI.
 
-![timeTrial level](lib/images/timeshot.png {width=200px height=300px}) ![basic level](lib/images/basicshot.png {width=200px height=300px})
+
+
+TimeTrial Level          |  Basic Level
+:-------------------------:|:-------------------------:
+![timeTrial level](lib/images/timeshot.png)|  ![basic level](lib/images/basicshot.png) |
 
 The game is split into 2 levels. Each level poses a different challenge to the user, such as achieving a minimum score in a fixed amount of time or clearing fruit in a fixed number of moves to bring special ingredients to the bottom of the board.
 
