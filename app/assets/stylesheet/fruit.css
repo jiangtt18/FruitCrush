@@ -1,12 +1,169 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300);
 #canvas {
+  position: absolute;
   margin:30px;
-  border: 1px solid black;
+  top: -3%;
+  right:0%;
+  /* background-color: red; */
+  /* border: 1px solid black; */
+
 }
 
-#startBtn {
+body, html {
+    height: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+h1 {
+    font-weight: 400;
+    /* color: red; /* For browsers that do not support gradients */ */
+    color: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet); /* For Safari 5.1 to 6.0 */
+    color: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet); /* For Opera 11.1 to 12.0 */
+    color: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet); /* For Firefox 3.6 to 15 */
+    color: linear-gradient(to right, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
+}
+.bg {
+    background-image: url("../../../lib/images/background.png");
+    height: 100%;
+
+    z-index: -1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.btn {
   position: absolute;
-  top:400px;
-  left:250px;
-  height:50px;
-  font-size: 20px;
+  top:50%;
+  width:135px;
+  height:135px;
+  cursor:pointer;
+}
+
+.innerCircle {
+  width:45%;
+  height:45%;
+  position: absolute;
+  left: 28%;
+  top: 25%;
+}
+.outerCircle{
+  width:100%;
+  height:100%;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+}
+
+.outerCircle {
+  -webkit-animation: spin 8s linear infinite; /* Safari */
+  animation: spin 8s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#basicBtn{
+  right:30%;
+}
+
+#basicCircle{
+  /* top:370px; */
+}
+
+#timeBtn{
+  right:15%;
+}
+
+#timeCircle{
+  /* top:500px */
+}
+
+#againBtn{
+  display: none;
+  left:67%;
+}
+
+#againCircle{
+  /* top:400px;
+  display: none; */
+}
+
+#title{
+  position: absolute;
+  width:40%;
+  height: 40%;
+  top:0%;
+  left:50px;
+}
+
+
+
+.plane,
+.cloud{
+  position:absolute;
+
+}
+
+@keyframes fade{
+  0%{ opacity: 0;}
+  10%{ opacity: 0.7;}
+  90%{ opacity:0.7;}
+  100%{ opacity:0;}
+}
+
+@keyframes small{
+  from{
+    left:70%;
+  }
+  to{
+    left:30%;
+  }
+}
+
+@keyframes medium{
+  from{
+    right:70%;
+  }
+  to{
+    right:60%;
+  }
+}
+
+
+.cloud{
+  animation-duration:60s;
+  animation-direction: normal;
+  animation-iteration-count:infinite;
+  animation-timing-function:linear;
+  animation-fill-mode:both;
+
+  display:block;
+  background:url(data:image/svg+xml;base64,PHN2ZyBpZD0iY2xvdWQiIHZpZXdCb3g9IjAgMCA1MiA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI1MnB4IiBoZWlnaHQ9IjQwcHgiPgoJPGRlZnM+CgkJPGZpbHRlciBpZD0iZjEiIHg9Ii0xMDAlIiB5PSItMTAwJSIgd2lkdGg9IjMwMCUiIGhlaWdodD0iMzAwJSI+IAoJCQk8ZmVPZmZzZXQgcmVzdWx0PSJvdXQiIGluPSJTb3VyY2VHcmFwaGljIiBkeD0iMCIgZHk9IjEiLz4KCQkJPGZlQ29sb3JNYXRyaXggcmVzdWx0PSJvdXQiIGluPSJvdXQiIHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAwLjQgMCIvPgoJCQk8ZmVHYXVzc2lhbkJsdXIgcmVzdWx0PSJvdXQiIGluPSJvdXQiIHN0ZERldmlhdGlvbj0iMiIvPgoJCQk8ZmVCbGVuZCBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJvdXQiIG1vZGU9Im5vcm1hbCIgcmVzdWx0PSJkcCIvPgoJCTwvZmlsdGVyPgoJPC9kZWZzPiAKCTxwYXRoIGlkPSJmZy1jbG91ZCIgZmlsdGVyPSJ1cmwoI2YxKSIgZD0iTTYuMyAzNS4xQzQuNyAzNC4yLTAuNCAzMi4zIDEuNCAyNSAzLjEgMTguMSA4LjcgMTkuNSA4LjcgMTkuNSA4LjcgMTkuNSAzLjIgMTQuMSAxMC40IDYuOCAxNi45IDAuMiAyMy4xIDQuNiAyMy4xIDQuNiAyMy4xIDQuNiAzMC0xLjcgMzUuMiAyLjQgNDQuNiA5LjcgNDIuOCAyNS4zIDQyLjggMjUuMyA0Mi44IDI1LjMgNDggMjIuNiA0OS44IDI4LjYgNTEgMzIuNyA0NiAzNS44IDQyLjggMzYuNyAzOS43IDM3LjUgOC45IDM2LjYgNi4zIDM1LjFaIiBzdHJva2U9IiNjY2NjY2MiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4=);
+  height:40px;
+  width:53px;
+  margin:0 auto;
+}
+.cloud--small{
+  animation-duration:50s;
+  animation-name:small, fade;
+  top:3%;
+  transform: scaleX(3) scaleY(1);
+}
+.cloud--medium{
+  animation-duration:40s;
+  animation-name:medium, fade;
+  animation-delay:7s;
+  top:10%;
+  transform: scaleX(5) scaleY(2);
 }

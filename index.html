@@ -2,14 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>bubbleCrush</title>
+    <title>FruitCrush</title>
     <!-- <style src='app/assets/stylesheet/fruit.css'> -->
     <link rel="stylesheet" type="text/css" href="app/assets/stylesheet/fruit.css">
     <!-- </style> -->
   </head>
-  <body >
-    <h1>Here we are!</h1>
-    <canvas id='canvas' width='600' height='700'></canvas>
+  <body>
+  <div class='bg' id='bg'> </div>
+
+    <canvas id='canvas' width='600' height='700' ></canvas>
+    <!-- <img id="background" src="lib/images/fruitTree.jpg" > -->
+    <img id='title' src="lib/images/title.png" >
     <img id='rose' src="lib/images/rose.png" style='display:none;'>
     <img id='orange' src="lib/images/orange.png" style='display:none;'>
     <img id='lemon' src="lib/images/lemon.png" style='display:none;'>
@@ -19,7 +22,23 @@
     <img id='blue' src="lib/images/blue.png" style='display:none;'>
     <audio src='lib/sound/sound.wav' id='sound'></audio>
     <audio src='lib/sound/backgroud.mp3' id='bgm'></audio>
-    <button type='button' id= 'startBtn'> START</button>
+    <!-- <button type='button' id= 'startBtn'> START</button> -->
+    <div id='timeBtn' class="btn">
+    <img class='innerCircle' src='lib/images/timeBtn.png'>
+    <img id='timeCircle' class='outerCircle' src='lib/images/timeCircle.png'>
+    </div>
+    <div id='againBtn' class='btn' onclick="location.href = 'index.html'">
+      <img class='innerCircle' src='lib/images/tryBtn.png' >
+      <img id='againCircle' class='outerCircle' src='lib/images/tryCircle.png'>
+    </div>
+    <div id ='basicBtn' class="btn">
+      <img  class='innerCircle' src='lib/images/easyBtn.png'>
+      <img id='basicCircle' class='outerCircle' src='lib/images/easyCircle.png'>
+    </div>
+
+    <span class="cloud cloud--small"></span>
+    <span class="cloud cloud--medium"></span>
+
 
     <script src='app/assets/javascripts/bundle.js'></script>
 
