@@ -2,11 +2,33 @@
 #canvas {
   position: absolute;
   margin:30px;
-  top: -3%;
+  top: -5%;
   right:0%;
   /* background-color: red; */
   /* border: 1px solid black; */
 
+}
+
+#description{
+    top: 20%;
+    position: absolute;
+    width: auto;
+    height: 6%;
+    left: 45%;
+}
+
+.footer{
+  position:absolute;
+  top:95%;
+  left:13%;
+  display:flex;
+  justify-content: space-between;
+}
+
+.link{
+  width:32px;
+  height: 32px;
+  margin-right:200px;
 }
 
 body, html {
