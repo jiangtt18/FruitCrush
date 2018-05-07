@@ -142,7 +142,7 @@ function Bubble(x, y) {
 
 function initialize() {
   // startBtn.style.display = 'none';
-  moveCount = 3;
+  moveCount = 100;
   if (timerMode) {
     timeCount = 10 * 1000;
   }
@@ -158,17 +158,17 @@ function initialize() {
 }
 
 function initBubbleBoard() {
-  for (var x = 0; x < 10; x++) {
+  for (var x = 0; x < 8; x++) {
     bubbles[x] = [];
-    for (var y = 0; y < 10; y++) {
+    for (var y = 0; y < 8; y++) {
       bubbles[x][y] = new Bubble(x, y);
     }
   }
 }
 
 function initBubbleColor() {
-  for (var x = 0; x < 10; x++) {
-    for (var y = 0; y < 10; y++) {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 0; y < 8; y++) {
       var foundcolor = false;
       while (!foundcolor) {
         foundcolor = false;
@@ -187,12 +187,7 @@ function initCanvas() {
   canvas.onmouseup = releaseMouse;
 }
 
-// let start = document.getElementById('basicBtn');
-// basicBtn.onclick = function(){
-//   initialize();
 //
-// };
-
 
 function gameOver() {
   ctx.clearRect(0, 0, 600, 700);
@@ -254,10 +249,10 @@ function setRemoveMark() {
 }
 
 function setHorizontalRemoveMark() {
-  for (var x = 0; x < 10; x++) {
+  for (var x = 0; x < 8; x++) {
     var currentColorIdx = bubbles[x][0].colorIdx;
     var numSameColor = 1;
-    for (var y = 1; y < 10; y++) {
+    for (var y = 1; y < 8; y++) {
       var nextColorIdx = bubbles[x][y].colorIdx;
       if (currentColorIdx == nextColorIdx) {
         numSameColor++;
@@ -275,10 +270,10 @@ function setHorizontalRemoveMark() {
 }
 
 function setVerticalRemoveMark() {
-  for (var y = 0; y < 10; y++) {
+  for (var y = 0; y < 8; y++) {
     var currentColorIdx = bubbles[0][y].colorIdx;
     var numSameColor = 1;
-    for (var x = 1; x < 10; x++) {
+    for (var x = 1; x < 8; x++) {
       var nextColorIdx = bubbles[x][y].colorIdx;
       if (currentColorIdx == nextColorIdx) {
         numSameColor++;
@@ -296,8 +291,8 @@ function setVerticalRemoveMark() {
 }
 
 function fall() {
-  for (var x = 0; x < 10; x++) {
-    for (var y = 9, newIdx = 9; y >= 0; y--, newIdx--) {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 7, newIdx = 7; y >= 0; y--, newIdx--) {
       while (newIdx >= 0) {
         if (bubbles[x][newIdx].remove) {
           newIdx--;
@@ -318,8 +313,8 @@ function fall() {
 
 function resetMark() {
   var playSound = true;
-  for (var x = 0; x < 10; x++) {
-    for (var y = 0; y < 10; y++) {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 0; y < 8; y++) {
       if (bubbles[x][y].remove) {
         bubbles[x][y].remove = false;
         score += 100;
@@ -361,10 +356,10 @@ function hasStraight3colors(x, y, curBubble) {
 
 function draw() {
   ctx.clearRect(0, 0, 600, 700);
-  for (var x = 0; x < 10; x++) {
-    for (var y = 0; y < 10; y++) {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 0; y < 8; y++) {
       var idx = bubbles[x][y].colorIdx;
-      ctx.drawImage(images[idx], x * 60 + 10, bubbles[x][y].getY(), 40, 40);
+      ctx.drawImage(images[idx], x * 60 + 8, bubbles[x][y].getY(), 40, 40);
     }
   }
 
