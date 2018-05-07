@@ -116,7 +116,7 @@ function Bubble(x, y) {
   this.y2 = y;
 
   this.getY = function () {
-
+    // move the fruit gradually
     return (this.y1 + (this.y2 - this.y1) * this.animationInterval / 25) * 60 + 100;
   };
 
@@ -131,9 +131,7 @@ function Bubble(x, y) {
 
   this.update = function () {
     this.animationInterval--;
-
     console.log(this.animationInterval);
-
     if (this.animationInterval <= 0) {
       this.moving = false;
     }
@@ -146,6 +144,7 @@ function initialize() {
   if (timerMode) {
     timeCount = 10 * 1000;
   }
+
   score = 0;
   initBubbleBoard();
   initBubbleColor();
@@ -156,38 +155,6 @@ function initialize() {
   bgm.play();
   console.log(animationMoveTime);
 }
-
-function initBubbleBoard() {
-  for (var x = 0; x < 8; x++) {
-    bubbles[x] = [];
-    for (var y = 0; y < 8; y++) {
-      bubbles[x][y] = new Bubble(x, y);
-    }
-  }
-}
-
-function initBubbleColor() {
-  for (var x = 0; x < 8; x++) {
-    for (var y = 0; y < 8; y++) {
-      var foundcolor = false;
-      while (!foundcolor) {
-        foundcolor = false;
-        var randomIndex = getRandomNum(6);
-        if (!hasStraight3colors(x, y, randomIndex)) {
-          bubbles[x][y].colorIdx = randomIndex;
-          foundcolor = true;
-        }
-      }
-    }
-  }
-}
-
-function initCanvas() {
-  canvas.onmousedown = pressMouse;
-  canvas.onmouseup = releaseMouse;
-}
-
-//
 
 function gameOver() {
   ctx.clearRect(0, 0, 600, 700);
@@ -460,6 +427,40 @@ timeBtn.onclick = function () {
 };
 
 // mod dule.export = 'basic';
+
+
+// **********************************************************
+// help method starts here
+
+function initBubbleBoard() {
+  for (var x = 0; x < 8; x++) {
+    bubbles[x] = [];
+    for (var y = 0; y < 8; y++) {
+      bubbles[x][y] = new Bubble(x, y);
+    }
+  }
+}
+
+function initBubbleColor() {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 0; y < 8; y++) {
+      var foundcolor = false;
+      while (!foundcolor) {
+        foundcolor = false;
+        var randomIndex = getRandomNum(6);
+        if (!hasStraight3colors(x, y, randomIndex)) {
+          bubbles[x][y].colorIdx = randomIndex;
+          foundcolor = true;
+        }
+      }
+    }
+  }
+}
+
+function initCanvas() {
+  canvas.onmousedown = pressMouse;
+  canvas.onmouseup = releaseMouse;
+}
 
 /***/ })
 /******/ ]);
