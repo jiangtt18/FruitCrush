@@ -87,10 +87,121 @@ var startPosX = null;
 var startPosY = null;
 var sound = document.getElementById('sound');
 var bgm = document.getElementById('bgm');
+bgm.loop = true;
 var background = document.getElementById('background');
 var body = document.getElementsByTagName('BODY');
 var description = document.getElementById('description');
 var timerMode = false;
+
+// *********************************************************************
+// Main functions
+basicBtn.onclick = function () {
+  setJS('');
+};
+
+// var countDown = document.getElementById('countDown');
+timeBtn.onclick = function () {
+  setJS('./lib/timeTrial.js');
+  timerMode = true;
+};
+
+function initialize() {
+  // startBtn.style.display = 'none';
+  moveCount = 100;
+  if (timerMode) {
+    timeCount = 10 * 1000;
+  }
+  score = 0;
+  initBubbleBoard();
+  initBubbleColor();
+  initCanvas();
+
+  animationMoveTime = setInterval(checkBubbleStatus, 25); //swapping motion time
+  // call continuesly . will always run down from 25 animationInteval. but will control the run down speed
+  bgm.play();
+  // console.log(animationMoveTime);
+}
+
+function gameOver() {
+  ctx.clearRect(0, 0, 600, 700);
+  againBtn.style.display = 'inline';
+  ctx.font = 'bold 30px Open Sans';
+  ctx.fillText('Score: ' + score, 300, 250);
+}
+
+// ********************************************************************
+// Bubble Move Logic
+
+function checkBubbleStatus() {
+  if (timerMode) {
+    timeCount -= 25;
+    changePlayBackRate();
+  }
+
+  if (moves.length > 0) {
+    console.log(moves);
+    for (var i = 0; i < moves.length; i++) {
+      moves[i].update();
+    }
+
+    moves = moves.filter(function (bubble) {
+      return bubble.animationInterval != 0;
+    });
+
+    if (moves.length == 0) {
+      setRemoveMark();
+      fall();
+    }
+  }
+
+  draw();
+
+  if (timerMode) {
+    if (moves.length == 0 && timeCount <= 0) {
+      resetGame();
+    }
+  } else {
+    if (moves.length == 0 && moveCount == 0) {
+      resetGame();
+    }
+  }
+}
+
+function setRemoveMark() {
+  setHorizontalRemoveMark();
+  setVerticalRemoveMark();
+}
+
+function pressMouse(e) {
+  startPosX = e.offsetX;
+  startPosY = e.offsetY;
+}
+
+function releaseMouse(e) {
+  var oldX = Math.floor(startPosX / 60);
+  var oldY = Math.floor((startPosY - 100) / 60);
+  // console.log('bubbleX:' + oldX);
+  // console.log('bubbleY:' + oldY);
+  var endPosX = e.offsetX;
+  var endPosY = e.offsetY;
+  var newPos = calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY);
+  var newX = newPos[0];
+  var newY = newPos[1];
+  //
+  // console.log('bubbleX:' + newX);
+  // console.log('bubbleY:' + newY);
+  // debugger;
+  if (bubbles[oldX][oldY].moving || bubbles[newX][newY].moving || animationMoveTime == null) {
+    // let it drops
+    return;
+  }
+  swapColorsAndPos(oldX, oldY, newX, newY); // drop to the ideal position. stops.
+  moveCount--;
+  draw();
+}
+
+// **********************************************************
+// help method starts here
 
 function setJS(fileName) {
   var ele = document.createElement('script');
@@ -138,69 +249,44 @@ function Bubble(x, y) {
   };
 }
 
-function initialize() {
-  // startBtn.style.display = 'none';
-  moveCount = 100;
-  if (timerMode) {
-    timeCount = 10 * 1000;
-  }
-
-  score = 0;
-  initBubbleBoard();
-  initBubbleColor();
-  initCanvas();
-  // debugger;
-  animationMoveTime = setInterval(checkBubbleStatus, 25); //swapping motion time
-  // call continuesly . will always run down from 25 animationInteval. but will control the run down speed
-  bgm.play();
-  console.log(animationMoveTime);
-}
-
-function gameOver() {
-  ctx.clearRect(0, 0, 600, 700);
-  againBtn.style.display = 'inline';
-  ctx.font = 'bold 30px Open Sans';
-  ctx.fillText('Score: ' + score, 300, 250);
-}
-
-function checkBubbleStatus() {
-  if (timerMode) {
-    timeCount -= 25;
-    if (bgm.playbackRate == 1 && timeCount < 5000) {
-      bgm.pause();
-      bgm.playbackRate = 1.5;
-      bgm.play();
-    }
-  }
-
-  if (moves.length > 0) {
-    console.log(moves);
-    for (var i = 0; i < moves.length; i++) {
-      // debugger;
-      moves[i].update();
-    }
-
-    moves = moves.filter(function (bubble) {
-      return bubble.animationInterval != 0;
-    });
-
-    if (moves.length == 0) {
-      setRemoveMark();
-      fall();
-    }
-  }
-  draw();
-  if (timerMode) {
-    if (moves.length == 0 && timeCount <= 0) {
-      resetGame();
-    }
-  } else {
-    if (moves.length == 0 && moveCount == 0) {
-      resetGame();
+function initBubbleBoard() {
+  for (var x = 0; x < 8; x++) {
+    bubbles[x] = [];
+    for (var y = 0; y < 8; y++) {
+      bubbles[x][y] = new Bubble(x, y);
     }
   }
 }
 
+function initBubbleColor() {
+  for (var x = 0; x < 8; x++) {
+    for (var y = 0; y < 8; y++) {
+      var foundcolor = false;
+      while (!foundcolor) {
+        foundcolor = false;
+        var randomIndex = getRandomNum(6);
+        if (!hasStraight3colors(x, y, randomIndex)) {
+          bubbles[x][y].colorIdx = randomIndex;
+          foundcolor = true;
+        }
+      }
+    }
+  }
+}
+
+function initCanvas() {
+  canvas.onmousedown = pressMouse;
+  canvas.onmouseup = releaseMouse;
+}
+
+function changePlayBackRate() {
+  if (bgm.playbackRate == 1 && timeCount < 5000) {
+    bgm.pause();
+    bgm.playbackRate = 1.5;
+    bgm.play();
+  }
+}
+function setMoves() {}
 function resetGame() {
   clearInterval(animationMoveTime);
   animationMoveTime = null;
@@ -208,11 +294,6 @@ function resetGame() {
   bgm.currentTime = 0;
   setTimeout(gameOver, 500);
   // gameOver();
-}
-
-function setRemoveMark() {
-  setHorizontalRemoveMark();
-  setVerticalRemoveMark();
 }
 
 function setHorizontalRemoveMark() {
@@ -334,52 +415,18 @@ function draw() {
   ctx.textAlign = 'center';
   if (timerMode) {
     var sec = Math.floor(timeCount / 1000);
-    // var mSec = timeCount % 100;
 
     if (sec < 0) {
       sec = '00';
     } else if (sec < 10) {
       sec = '0' + sec;
     }
-
-    // if (mSec < 0) mSec = '00';
-
     ctx.fillText('Time Left : ' + sec, 150, 50);
   } else {
     ctx.fillText('Moves Left:' + moveCount, 150, 50);
   }
 
   ctx.fillText('Score :' + score, 450, 50);
-}
-
-function pressMouse(e) {
-  startPosX = e.offsetX;
-  startPosY = e.offsetY;
-  // console.log('dX:' + startPosX);
-  // console.log('dY:' + startPosY);
-}
-
-function releaseMouse(e) {
-  var oldX = Math.floor(startPosX / 60);
-  var oldY = Math.floor((startPosY - 100) / 60);
-  // console.log('bubbleX:' + oldX);
-  // console.log('bubbleY:' + oldY);
-  var endPosX = e.offsetX;
-  var endPosY = e.offsetY;
-  var newPos = calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY);
-  var newX = newPos[0];
-  var newY = newPos[1];
-  //
-  // console.log('bubbleX:' + newX);
-  // console.log('bubbleY:' + newY);
-  // debugger;
-  if (bubbles[oldX][oldY].moving || bubbles[newX][newY].moving || animationMoveTime == null) {
-    // let it drops
-    return;
-  }
-  swapColorsAndPos(oldX, oldY, newX, newY); // drop to the ideal position. stops.
-  moveCount--;
-  draw();
 }
 
 function swapColorsAndPos(oldX, oldY, newX, newY) {
@@ -403,63 +450,6 @@ function calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY) {
     y += yDistance > 0 ? 1 : -1;
   }
   return [x, y];
-}
-function setCanvasStyle() {
-  // canvas.style.border = "5px solid rgb(255, 77, 136)";
-  // canvas.style.borderRadius =  '50px';
-  // document.getElementById('bg').style.width = '50%';
-  // document.getElementById('bg').style.backgroundImage ='url("lib/images/gameBackground.png")';
-
-}
-basicBtn.onclick = function () {
-  setJS('');
-
-  setCanvasStyle();
-};
-
-var countDown = document.getElementById('countDown');
-timeBtn.onclick = function () {
-  setJS('./lib/timeTrial.js');
-  timerMode = true;
-  // countDown.style.display = 'block';
-  // ctx.fillText('Time Left : ' , 80, 50);
-  setCanvasStyle();
-};
-
-// mod dule.export = 'basic';
-
-
-// **********************************************************
-// help method starts here
-
-function initBubbleBoard() {
-  for (var x = 0; x < 8; x++) {
-    bubbles[x] = [];
-    for (var y = 0; y < 8; y++) {
-      bubbles[x][y] = new Bubble(x, y);
-    }
-  }
-}
-
-function initBubbleColor() {
-  for (var x = 0; x < 8; x++) {
-    for (var y = 0; y < 8; y++) {
-      var foundcolor = false;
-      while (!foundcolor) {
-        foundcolor = false;
-        var randomIndex = getRandomNum(6);
-        if (!hasStraight3colors(x, y, randomIndex)) {
-          bubbles[x][y].colorIdx = randomIndex;
-          foundcolor = true;
-        }
-      }
-    }
-  }
-}
-
-function initCanvas() {
-  canvas.onmousedown = pressMouse;
-  canvas.onmouseup = releaseMouse;
 }
 
 /***/ })
