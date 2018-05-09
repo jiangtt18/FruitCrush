@@ -88,9 +88,12 @@ var startPosY = null;
 var sound = document.getElementById('sound');
 var bgm = document.getElementById('bgm');
 bgm.loop = true;
-var background = document.getElementById('background');
+var background = document.getElementById('bg');
 var body = document.getElementsByTagName('BODY');
 var description = document.getElementById('description');
+var clouds = document.getElementById("clouds1");
+var clouds2 = document.getElementById("clouds2");
+var title = document.getElementById("title");
 var timerMode = false;
 
 // *********************************************************************
@@ -210,9 +213,7 @@ function setJS(fileName) {
   document.body.appendChild(ele);
 
   setTimeout(function () {
-    basicBtn.style.display = 'none';
-    timeBtn.style.display = 'none';
-    description.style.display = 'none';
+    resetBackground();
     initialize();
   }, 200);
 }
@@ -292,7 +293,8 @@ function resetGame() {
   animationMoveTime = null;
   bgm.pause();
   bgm.currentTime = 0;
-  setTimeout(gameOver, 500);
+
+  setTimeout(gameOver, 0).then(bringBackBackground());
   // gameOver();
 }
 
@@ -411,7 +413,7 @@ function draw() {
     }
   }
 
-  ctx.font = 'bold 20px Open Sans';
+  ctx.font = 'bold 20px Comic Sans MS';
   ctx.textAlign = 'center';
   if (timerMode) {
     var sec = Math.floor(timeCount / 1000);
@@ -450,6 +452,24 @@ function calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY) {
     y += yDistance > 0 ? 1 : -1;
   }
   return [x, y];
+}
+
+function resetBackground() {
+  basicBtn.style.display = 'none';
+  timeBtn.style.display = 'none';
+  description.style.display = 'none';
+  background.style.display = 'none';
+  clouds.style.display = 'none';
+  clouds2.style.display = 'none';
+  title.style.display = 'none';
+}
+
+function bringBackBackground() {
+  description.style.display = 'inline';
+  background.style.display = 'block';
+  clouds.style.display = 'inline';
+  clouds2.style.display = 'inline';
+  title.style.display = 'inline';
 }
 
 /***/ })

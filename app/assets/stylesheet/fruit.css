@@ -48,7 +48,6 @@ h1 {
 .bg {
     background-image: url("../../../lib/images/background.png");
     height: 100%;
-
     z-index: -1;
     background-position: center;
     background-repeat: no-repeat;
