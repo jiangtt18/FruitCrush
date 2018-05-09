@@ -101,7 +101,7 @@ basicBtn.onclick = function () {
 
 // var countDown = document.getElementById('countDown');
 timeBtn.onclick = function () {
-  setJS('./lib/timeTrial.js');
+  setJS('');
   timerMode = true;
 };
 
@@ -403,7 +403,7 @@ function hasStraight3colors(x, y, curBubble) {
 }
 
 function draw() {
-  ctx.clearRect(0, 0, 600, 700);
+  ctx.clearRect(0, 0, 500, 600);
   for (var x = 0; x < 8; x++) {
     for (var y = 0; y < 8; y++) {
       var idx = bubbles[x][y].colorIdx;
@@ -421,12 +421,12 @@ function draw() {
     } else if (sec < 10) {
       sec = '0' + sec;
     }
-    ctx.fillText('Time Left : ' + sec, 150, 50);
+    ctx.fillText('Time Left : ' + sec, 100, 50);
   } else {
-    ctx.fillText('Moves Left:' + moveCount, 150, 50);
+    ctx.fillText('Moves Left:' + moveCount, 100, 50);
   }
 
-  ctx.fillText('Score :' + score, 450, 50);
+  ctx.fillText('Score :' + score, 400, 50);
 }
 
 function swapColorsAndPos(oldX, oldY, newX, newY) {
