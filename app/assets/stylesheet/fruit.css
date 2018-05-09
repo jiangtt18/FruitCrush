@@ -1,13 +1,36 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:300);
 #canvas {
   position: absolute;
-  margin:30px;
-  top: -5%;
-  right:0%;
+  right: 32%;
   /* background-color: red; */
   /* border: 1px solid black; */
 
 }
+
+.newBg{
+  background: rgb(252 241 237);
+}
+
+.right-side, .left-side{
+  background-color: rgba(255, 255, 255, 0.4);
+  display:none;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top:7%;
+  width: 300px;
+  height: 510px;
+  padding: 10px;
+  font-family: Comic Sans MS;
+
+}
+#right{
+  right: 5%;
+}
+#left{
+  left:5%;
+}
+
 
 #description{
     top: 20%;

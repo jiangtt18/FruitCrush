@@ -5,12 +5,13 @@
     <title>FruitCrush</title>
     <!-- <style src='app/assets/stylesheet/fruit.css'> -->
     <link rel="stylesheet" type="text/css" href="app/assets/stylesheet/fruit.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
     <!-- </style> -->
   </head>
-  <body>
+  <body id='body'>
   <div class='bg' id='bg'> </div>
 
-    <canvas id='canvas' width='500' height='600' ></canvas>
+    <canvas id='canvas' width='480' height='600' ></canvas>
     <!-- <img id="background" src="lib/images/fruitTree.jpg" > -->
     <img id='title' src="lib/images/title.png" >
     <img id='rose' src="lib/images/rose.png" style='display:none;'>
@@ -42,6 +43,33 @@
 
 
     <div id = 'countDown' style='display:none;' >Time</div>
+
+    <div class='left-side' id='left'>
+      <h4>Instructions</h4>
+
+      <strong>Rules</strong>
+      <p>
+        The game is played by swiping fruits, in any direction (so long as it is not blocked), to create sets of 3 or more matching fruits. When matched, the fruits will crush and shift the fruits above them, allowing you to accomplish a series of different goals.
+      </p>
+      <br>
+      <strong>Steps</strong>
+      <p>Click on fruit you want to move<br>
+      Drag the fruit to the designed spot</p>
+      <br>
+      <strong>Understand the objective</strong>
+      <p>Clear as many rows and columns as possible in as few moves as possible.
+      </p>
+
+    </div>
+
+
+    <div class='right-side' id='right'>
+      <button id = 'mute'><i class="fa fa-microphone-slash" aria-hidden="true" onclick='bgm.pause()'></i></button>
+      <button id = 'mic'><i class="fas fa-microphone" onclick='bgm.play()'></i></button>
+      <button><i class="fas fa-angle-double-left" onclick="location.href = 'index.html'"></i></button>
+    </div>
+
+
     <div class='footer'>
       <span>
         <a href= 'https://www.linkedin.com/in/jiangtt/'>

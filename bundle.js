@@ -89,12 +89,17 @@ var sound = document.getElementById('sound');
 var bgm = document.getElementById('bgm');
 bgm.loop = true;
 var background = document.getElementById('bg');
-var body = document.getElementsByTagName('BODY');
+var body = document.getElementById('body');
 var description = document.getElementById('description');
 var clouds = document.getElementById("clouds1");
 var clouds2 = document.getElementById("clouds2");
 var title = document.getElementById("title");
+var right = document.getElementById("right");
+var left = document.getElementById("left");
+var mute = document.getElementById("mute");
+var mic = document.getElementById("mic");
 var timerMode = false;
+var canPlay = true;
 
 // *********************************************************************
 // Main functions
@@ -415,6 +420,11 @@ function draw() {
 
   ctx.font = 'bold 20px Comic Sans MS';
   ctx.textAlign = 'center';
+  ctx.shadowColor = '#pink';
+  ctx.shadowBlur = 20;
+  ctx.shadowOffsetX = 15;
+  ctx.shadowOffsetY = 15;
+
   if (timerMode) {
     var sec = Math.floor(timeCount / 1000);
 
@@ -428,7 +438,7 @@ function draw() {
     ctx.fillText('Moves Left:' + moveCount, 100, 50);
   }
 
-  ctx.fillText('Score :' + score, 400, 50);
+  ctx.fillText('Score :' + score, 420, 50);
 }
 
 function swapColorsAndPos(oldX, oldY, newX, newY) {
@@ -462,6 +472,9 @@ function resetBackground() {
   clouds.style.display = 'none';
   clouds2.style.display = 'none';
   title.style.display = 'none';
+  right.style.display = 'flex';
+  left.style.display = 'flex';
+  body.classList.add('newBg');
 }
 
 function bringBackBackground() {
@@ -470,6 +483,8 @@ function bringBackBackground() {
   clouds.style.display = 'inline';
   clouds2.style.display = 'inline';
   title.style.display = 'inline';
+  right.style.display = 'none';
+  left.style.display = 'none';
 }
 
 /***/ })
