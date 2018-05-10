@@ -49,8 +49,8 @@
 
 .footer{
   position:absolute;
-  right: 3%;
-  bottom: 1%;
+  right: 5%;
+  bottom: 5%;
   display:flex;
   justify-content: space-between;
 }

@@ -117,7 +117,7 @@ function initialize() {
   // startBtn.style.display = 'none';
   moveCount = 100;
   if (timerMode) {
-    timeCount = 10 * 1000;
+    timeCount = 60 * 1000;
   }
   score = 0;
   initBubbleBoard();
@@ -463,7 +463,7 @@ function draw() {
     ctx.fillText('Moves Left:' + moveCount, 100, 50);
   }
 
-  ctx.fillText('Score :' + score, 420, 50);
+  ctx.fillText('Score :' + score, 380, 50);
 }
 
 function swapColorsAndPos(oldX, oldY, newX, newY) {
