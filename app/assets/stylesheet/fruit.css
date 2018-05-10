@@ -8,7 +8,7 @@
 }
 
 .newBg{
-  background: rgb(252 241 237);
+  background: #D1E7FE;
 }
 
 .right-side, .left-side{
@@ -33,9 +33,11 @@
 }
 
 .right-side button {
-  width:5%;
+  width:20%;
   height:5%;
-  margin-right: 10px
+  margin-right: 10px;
+  background: #FC7E7E;
+  border-radius: 8px
 }
 
 
@@ -165,9 +167,7 @@ h1 {
   left:50px;
 }
 
-.maginify{
-  transform: scale(1.1);
-}
+
 .plane,
 .cloud{
   position:absolute;
