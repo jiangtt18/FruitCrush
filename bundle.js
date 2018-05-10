@@ -181,8 +181,15 @@ function setRemoveMark() {
 }
 
 function pressMouse(e) {
+  // curBubble.animateUnClick();
   startPosX = e.offsetX;
   startPosY = e.offsetY;
+  console.log(startPosY);
+  console.log(startPosX);
+  var bubbleX = Math.floor(startPosX / 60);
+  var bubbleY = Math.floor((startPosY - 100) / 60);
+  var curBubble = bubbles[bubbleX][bubbleY];
+  curBubble.animateOnClick();
 }
 
 function releaseMouse(e) {
@@ -192,6 +199,10 @@ function releaseMouse(e) {
   // console.log('bubbleY:' + oldY);
   var endPosX = e.offsetX;
   var endPosY = e.offsetY;
+  var curBubble = bubbles[Math.floor(endPosX / 60)][Math.floor((endPosY - 100) / 60)];
+  console.log(endPosX);
+  console.log(endPosY);
+  curBubble.animateUnClick();
   var newPos = calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY);
   var newX = newPos[0];
   var newY = newPos[1];
@@ -231,6 +242,8 @@ function Bubble(x, y) {
 
   this.x2 = x;
   this.y2 = y;
+  this.width = 40;
+  this.height = 40;
 
   this.getY = function () {
     // move the fruit gradually
@@ -246,9 +259,20 @@ function Bubble(x, y) {
     moves.push(this);
   };
 
+  this.animateOnClick = function () {
+    this.width = 45;
+    this.height = 45;
+  };
+
+  this.animateUnClick = function () {
+    this.width = 40;
+    this.height = 40;
+  };
   this.update = function () {
+    this.width = 40;
+    this.height = 40;
     this.animationInterval--;
-    console.log(this.animationInterval);
+    // console.log(this.animationInterval);
     if (this.animationInterval <= 0) {
       this.moving = false;
     }
@@ -299,7 +323,8 @@ function resetGame() {
   bgm.pause();
   bgm.currentTime = 0;
 
-  setTimeout(gameOver, 0).then(bringBackBackground());
+  setTimeout(gameOver, 0);
+  bringBackBackground();
   // gameOver();
 }
 
@@ -414,7 +439,7 @@ function draw() {
   for (var x = 0; x < 8; x++) {
     for (var y = 0; y < 8; y++) {
       var idx = bubbles[x][y].colorIdx;
-      ctx.drawImage(images[idx], x * 60 + 8, bubbles[x][y].getY(), 40, 40);
+      ctx.drawImage(images[idx], x * 60 + 8, bubbles[x][y].getY(), bubbles[x][y].width, bubbles[x][y].height);
     }
   }
 
@@ -479,6 +504,7 @@ function resetBackground() {
 
 function bringBackBackground() {
   description.style.display = 'inline';
+  body.classList.remove('newBg');
   background.style.display = 'block';
   clouds.style.display = 'inline';
   clouds2.style.display = 'inline';

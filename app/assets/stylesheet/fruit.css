@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:300);
 #canvas {
   position: absolute;
-  right: 32%;
+  right: 31%;
   /* background-color: red; */
   /* border: 1px solid black; */
 
@@ -15,7 +15,6 @@
   background-color: rgba(255, 255, 255, 0.4);
   display:none;
   justify-content: center;
-  flex-direction: column;
   position: absolute;
   top:7%;
   width: 300px;
@@ -26,9 +25,17 @@
 }
 #right{
   right: 5%;
+  flex-direction: row ;
 }
 #left{
   left:5%;
+  flex-direction: column
+}
+
+.right-side button {
+  width:5%;
+  height:5%;
+  margin-right: 10px
 }
 
 
@@ -68,6 +75,7 @@ h1 {
     color: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet); /* For Firefox 3.6 to 15 */
     color: linear-gradient(to right, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
 }
+
 .bg {
     background-image: url("../../../lib/images/background.png");
     height: 100%;
@@ -157,8 +165,9 @@ h1 {
   left:50px;
 }
 
-
-
+.maginify{
+  transform: scale(1.1);
+}
 .plane,
 .cloud{
   position:absolute;
