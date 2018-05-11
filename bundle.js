@@ -113,6 +113,16 @@ timeBtn.onclick = function () {
   timerMode = true;
 };
 
+mute.onclick = function () {
+  canPlay = false;
+  bgm.pause();
+};
+
+mic.onclick = function () {
+  canPlay = true;
+  bgm.play();
+};
+
 function initialize() {
   // startBtn.style.display = 'none';
   moveCount = 100;
@@ -184,8 +194,8 @@ function pressMouse(e) {
   // curBubble.animateUnClick();
   startPosX = e.offsetX;
   startPosY = e.offsetY;
-  console.log(startPosY);
-  console.log(startPosX);
+  // console.log(startPosY);
+  // console.log(startPosX);
   var bubbleX = Math.floor(startPosX / 60);
   var bubbleY = Math.floor((startPosY - 100) / 60);
   var curBubble = bubbles[bubbleX][bubbleY];
@@ -200,8 +210,8 @@ function releaseMouse(e) {
   var endPosX = e.offsetX;
   var endPosY = e.offsetY;
   var curBubble = bubbles[Math.floor(endPosX / 60)][Math.floor((endPosY - 100) / 60)];
-  console.log(endPosX);
-  console.log(endPosY);
+  // console.log(endPosX);
+  // console.log(endPosY);
   curBubble.animateUnClick();
   var newPos = calcNewPos(startPosX, endPosX, startPosY, endPosY, oldX, oldY);
   var newX = newPos[0];
@@ -313,7 +323,9 @@ function changePlayBackRate() {
   if (bgm.playbackRate == 1 && timeCount < 5000) {
     bgm.pause();
     bgm.playbackRate = 1.5;
-    bgm.play();
+    if (canPlay) {
+      bgm.play();
+    }
   }
 }
 function setMoves() {}
@@ -392,7 +404,9 @@ function fall() {
 }
 
 function resetMark() {
-  var playSound = true;
+  if (canPlay) {
+    var playSound = true;
+  }
   for (var x = 0; x < 8; x++) {
     for (var y = 0; y < 8; y++) {
       if (bubbles[x][y].remove) {

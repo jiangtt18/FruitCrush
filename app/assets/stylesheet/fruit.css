@@ -21,21 +21,24 @@
   height: 510px;
   padding: 10px;
   font-family: Comic Sans MS;
+  flex-direction: column ;
 
 }
 #right{
   right: 5%;
-  flex-direction: row ;
+  text-align: center;
 }
 #left{
   left:5%;
-  flex-direction: column
 }
 
 .right-side button {
-  width:20%;
-  height:5%;
-  margin-right: 10px;
+  width:40%;
+  height:10%;
+  font-size: 16px;
+  margin-left: 30%;
+  margin-top: 10px;
+  right:10%;
   background: #FC7E7E;
   border-radius: 8px
 }
