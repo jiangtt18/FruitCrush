@@ -81,6 +81,7 @@ var score;
 var animationMoveTime;
 var images = [rose, orange, lemon, orchard, lime, grapefruit, blue];
 var againBtn = document.getElementById('againBtn');
+var scoreTitle = document.getElementById('score');
 var timeBtn = document.getElementById('timeBtn');
 var basicBtn = document.getElementById('basicBtn');
 var startPosX = null;
@@ -127,7 +128,7 @@ function initialize() {
   // startBtn.style.display = 'none';
   moveCount = 100;
   if (timerMode) {
-    timeCount = 60 * 1000;
+    timeCount = 10 * 1000;
   }
   score = 0;
   initBubbleBoard();
@@ -143,8 +144,16 @@ function initialize() {
 function gameOver() {
   ctx.clearRect(0, 0, 600, 700);
   againBtn.style.display = 'inline';
-  ctx.font = 'bold 30px Open Sans';
-  ctx.fillText('Score: ' + score, 300, 250);
+  scoreTitle.style.display = 'inline';
+  addElement();
+}
+
+function addElement() {
+  var newDiv = document.createElement("h2");
+  var newContent = document.createTextNode(score);
+  newDiv.setAttribute("id", "finalScore");
+  newDiv.appendChild(newContent);
+  scoreTitle.appendChild(newDiv);
 }
 
 // ********************************************************************
@@ -517,6 +526,7 @@ function resetBackground() {
 }
 
 function bringBackBackground() {
+
   description.style.display = 'inline';
   body.classList.remove('newBg');
   background.style.display = 'block';

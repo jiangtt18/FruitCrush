@@ -1,11 +1,27 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:300);
+
+@media only screen and (max-width: 1920px){
+  #canvas {
+    left: 40%;
+  }
+  #left{
+    left:20%;
+  }
+}
+
+@media only screen and (max-width: 1280px){
+  #canvas {
+    left: 31%;
+  }
+  #left{
+    left:5%;
+  }
+}
+
 #canvas {
   position: absolute;
-  right: 31%;
-  /* background-color: red; */
-  /* border: 1px solid black; */
-
 }
+
 
 .newBg{
   background: #D1E7FE;
@@ -24,13 +40,16 @@
   flex-direction: column ;
 
 }
+
 #right{
-  right: 5%;
+  left:70%;
   text-align: center;
 }
+
 #left{
-  left:5%;
+  font-size:16px;
 }
+
 
 .right-side button {
   width:40%;
@@ -52,6 +71,26 @@
     left: 45%;
 }
 
+#expand{
+  width: 20px;
+  height: 20px;
+}
+#hand {
+  color:burlywood;
+}
+
+#score{
+  position: absolute;
+  top: 40%;
+  right: 25%;
+  display:none
+}
+
+#finalScore{
+  right: -60%;
+  position: absolute;
+  top: -140%;
+}
 .footer{
   position:absolute;
   right: 5%;
@@ -59,6 +98,7 @@
   display:flex;
   justify-content: space-between;
 }
+
 
 .link{
   width:32px;
